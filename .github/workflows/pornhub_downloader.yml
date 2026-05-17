@@ -46,7 +46,7 @@ jobs:
         run: |
           pip install -U yt-dlp
           sudo apt-get update
-          sudo apt-get install -y bc
+          sudo apt-get install -y bc rar
 
       - name: Download video (retry up to 5 times)
         id: download
@@ -54,7 +54,9 @@ jobs:
         run: |
           FOLDER="${{ github.event.inputs.output_folder }}"
           mkdir -p "$FOLDER"
-          touch marker
+
+          MARKER=$(mktemp)
+          touch "$MARKER"
 
           MAX_RETRIES=5
           RETRY_COUNT=0
@@ -76,7 +78,7 @@ jobs:
               --newline \
               "${{ github.event.inputs.url }}" && {
 
-                NEW_FILE=$(find "$FOLDER" -type f -newer marker -print -quit)
+                NEW_FILE=$(find "$FOLDER" -type f -newer "$MARKER" -print0 | xargs -0 -r ls -t | head -n 1)
 
                 if [ -n "$NEW_FILE" ]; then
                   echo "Download succeeded: $NEW_FILE"
@@ -104,11 +106,8 @@ jobs:
           FILENAME=$(basename "$NEW_FILE")
           SIZE_BYTES=$(stat -c %s "$NEW_FILE")
 
-          echo "filename=$FILENAME" >> $GITHUB_OUTPUT
-          echo "size_bytes=$SIZE_BYTES" >> $GITHUB_OUTPUT
-
-      - name: Install RAR
-        run: sudo apt-get install -y rar
+          echo "filename=$FILENAME" >> "$GITHUB_OUTPUT"
+          echo "size_bytes=$SIZE_BYTES" >> "$GITHUB_OUTPUT"
 
       - name: Conditional split (if file > 99 MB)
         id: split
@@ -131,11 +130,11 @@ jobs:
 
             rm "$FILENAME"
 
-            echo "split_done=true" >> $GITHUB_OUTPUT
+            echo "split_done=true" >> "$GITHUB_OUTPUT"
             ls -lh "${ARCHIVE_NAME}.part"*.rar
 
           else
-            echo "split_done=false" >> $GITHUB_OUTPUT
+            echo "split_done=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Commit and push to repository
