@@ -133,24 +133,4 @@ Meli-Action/
 
 اگه این ابزار به کارت اومد، با زدن ستاره ⭐ ازم حمایت کن — به پیدا شدن پروژه توسط بقیه کمک می‌کنه!
 
-</div>
 
-<a href="https://star-history.com/#Kurdeus/Meli-Action&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Kurdeus/Meli-Action&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Kurdeus/Meli-Action&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Kurdeus/Meli-Action&type=Date" />
-  </picture>
-</a>
-
-<div dir="rtl">
-
----
-
-## 👥 Contributors
-
-</div>
-
-<a href="https://github.com/Kurdeus/Meli-Action/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Kurdeus/Meli-Action" alt="Meli-Action contributors" width="200"/>
-</a>
